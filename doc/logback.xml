@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<property name="LOG_DIR" value="C:/Project/logs" />
+	<property name="LOG_PATH_NAME" value="${LOG_DIR}/stdout.log" />
+	<property name="petclinic_LOG_PATH_NAME" value="${LOG_DIR}/stdout_petclinic.log" /> 
+ 
+ 
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+	<!--<logger name="org.hibernate" level="debug"/> -->
+  
+ 	<logger name="org.springframework.samples.petclinic" level="debug"
+		additivity="false">
+		<appender-ref ref="petclinic_LOG_PATH_NAME" />
+	</logger>
+	
+	<appender name="Ryu" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<encoder>
+			<pattern>%-5level %logger{0} - %msg%n</pattern>
+		</encoder>
+
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:/Project/logs/ryu.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>sujemall-webapp.%d{yyyy-MM-dd}.log</fileNamePattern>
+ 
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+ 
+        <encoder>
+            <pattern>%-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Ryu_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:/Project/logs/ryu.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover. Make sure the path matches the one in the file element or else
+             the rollover logs are placed in the working directory. -->
+            <fileNamePattern>>C:/Project/logs/application_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+ 
+	 <appender name="petclinic_LOG_PATH_NAME" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	  <file>${petclinic_LOG_PATH_NAME}</file>
+	  <append>true</append>
+	  <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	   <!-- daily rollover -->
+	   <fileNamePattern>${GW_LOG_PATH_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+	   <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	    <!-- or whenever the file size reaches 50MB -->
+	    <maxFileSize>50MB</maxFileSize>
+	   </timeBasedFileNamingAndTriggeringPolicy>
+	   <!-- keep 30 days' worth of history -->
+	   <maxHistory>30</maxHistory>
+	  </rollingPolicy>
+	  <encoder>
+	   <pattern>%d{HH:mm:ss.SSS} %-6level %logger{35} - %msg%n</pattern>
+	  </encoder>
+	 </appender>
+     
+	<root level="OFF">
+		<appender-ref ref="Ryu" />
+ <!--        <appender-ref ref="console" level="trace" />
+        <appender-ref ref="console" level="debug" />
+  -->       
+        
+	</root>
+	   
+</configuration>

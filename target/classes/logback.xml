@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<!-- To enable JMX Management -->
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-5level %logger{0} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+    <logger name="org.springframework.aop.interceptor" level="TRACE"
+		additivity="false">
+		<appender-ref ref="trace" />
+	</logger>
+
+
+	 
+
+    <appender name="trace" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:/Project/logs/trace.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover. Make sure the path matches the one in the file element or else
+             the rollover logs are placed in the working directory. -->
+            <fileNamePattern>>C:/Project/logs/trace_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>	 
+     
+
+    <logger name="common.aop" level="ERROR"
+		additivity="false">
+		<appender-ref ref="StopWatchAspect" />
+	</logger>
+
+
+	
+
+    <appender name="StopWatchAspect" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:/Project/logs/StopWatchAspect.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover. Make sure the path matches the one in the file element or else
+             the rollover logs are placed in the working directory. -->
+            <fileNamePattern>>C:/Project/logs/StopWatchAspect_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>	 
+     
+     
+
+   <appender name="Ryu" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> 
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <pattern>%message%n</pattern>
+        </encoder>
+    
+    </appender>
+    
+	<root level="DEBUG">
+		<appender-ref ref="Ryu" />
+	<!-- 	<appender-ref ref="StopWatchAspect" />
+		<appender-ref ref="trace" />
+		 -->
+		
+	</root>
+	
+	
+</configuration>
